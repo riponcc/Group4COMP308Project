@@ -1,0 +1,87 @@
+/* Full page wrapper */
+/* Full page wrapper */
+.auth-wrapper {
+  min-height: 100vh;           /* Full screen height */
+  width: 100%;                 /* Full width */
+  display: flex;               /* Enable flexbox */
+  justify-content: center;     /* Horizontal center */
+  background: linear-gradient(to right, #98dd96, #5d8bb1);
+  padding: 20px;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Authentication Card */
+.auth-card {
+  width: 520px;
+  border-radius: 15px;
+  background: #fff;
+  border: none;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tabs */
+.nav-tabs .nav-link {
+  margin-right: 12px;   /* spacing between Login and Sign Up */
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+
+.nav-tabs .nav-link.active {
+  background: none !important;
+  color: #0d6efd !important;
+  border-bottom: 3px solid #0d6efd !important;
+}
+
+/* Form labels */
+.form-label {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Form input styles */
+.form-control {
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  transition: 0.3s;
+}
+
+.form-control:focus {
+  border-color: #4c6ef5;
+  box-shadow: 0 0 0 0.15rem rgba(76, 110, 245, 0.25);
+}
+
+/* Buttons */
+button.btn {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+/* Logged-in view */
+.welcome-box {
+  padding: 20px;
+}
+
+.welcome-box h5 {
+  font-weight: 700;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .auth-card {
+    width: 100%;
+    padding: 20px !important;
+  }
+}
