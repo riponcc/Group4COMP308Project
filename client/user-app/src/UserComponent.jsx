@@ -40,7 +40,7 @@ function UserComponent() {
     username: "",
     email: "",
     password: "",
-    role: "resident",
+    role: "Resident",
   });
 
   const [activeTab, setActiveTab] = useState("login");
@@ -147,9 +147,9 @@ function UserComponent() {
                   <Form.Group className="mb-3">
                     <Form.Label>Role</Form.Label>
                     <Form.Select name="role" value={formData.role} onChange={handleChange}>
-                      <option value="resident">Resident</option>
-                      <option value="municipal_staff">Municipal Staff</option>
-                      <option value="community_advocate">Community Advocate</option>
+                      <option value="Resident">Resident</option>
+                      <option value="Staff">Municipal Staff</option>
+                      <option value="Advocate">Community Advocate</option>
                     </Form.Select>
                   </Form.Group>
                 </>

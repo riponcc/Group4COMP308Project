@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
   role: { 
     type: String, 
     required: true, 
-    enum: ['resident', 'municipal-staff', 'community_advocate'],
+    enum: ['Resident', 'Staff', 'Advocate'],
     description: 'Defines user permissions'
   },
   createdAt: { 
