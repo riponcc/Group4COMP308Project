@@ -1,56 +1,46 @@
-// src/services/IssueService.js
-export default class IssueService {
-  constructor(IssueModel, issueAI) {
-    this.Issue = IssueModel;
-    this.issueAI = issueAI;
+// Basic issue service with CRUD + simple search
+export default function makeIssueService({ IssueModel }) {
+  async function listIssues(filter = {}) {
+    return IssueModel.find(filter).limit(100).lean();
   }
 
-  async createIssue(input, userId) {
-    const { title, description, latitude, longitude, photoUrl } = input;
-
-    // Call AI to enrich the issue
-    const aiResult = await this.issueAI.analyze(description);
-
-    const issue = new this.Issue({
-      title,
-      description,
-      latitude,
-      longitude,
-      photoUrl,
-      category: aiResult.category,
-      urgency: aiResult.urgency,
-      createdBy: userId,
-    });
-
-    await issue.save();
-    return issue;
+  async function getIssueById(id) {
+    return IssueModel.findById(id);
   }
 
-  async listIssues(filter = {}) {
-    const query = {};
-    if (filter.status) query.status = filter.status;
-    if (filter.category) query.category = filter.category;
-
-    // 
-    const issues = await this.Issue.find(query).sort({ createdAt: -1 }).exec();
-    return issues.map(i => ({
-      ...i._doc,
-      id: i.id,
-      createdAt: i.createdAt?.toISOString(),
-      updatedAt: i.updatedAt?.toISOString()
-    }));
-
+  async function createIssue(input, userId) {
+    const issue = new IssueModel({ ...input, createdBy: userId });
+    return issue.save();
   }
 
-  async getIssueById(id) {
-    return this.Issue.findById(id).exec();
+  async function updateIssueStatus(id, status) {
+    return IssueModel.findByIdAndUpdate(id, { status }, { new: true });
   }
 
-  async updateIssueStatus(id, newStatus) {
-    return this.Issue.findByIdAndUpdate(
-      id,
-      { status: newStatus },
-      { new: true }
-    ).exec();
+  // simple text search; replace with vector search in production
+  async function searchIssuesByText(text, { limit = 5 } = {}) {
+    // Use MongoDB text index if present
+    try {
+      return IssueModel.find({ $text: { $search: text } })
+        .limit(limit)
+        .lean();
+    } catch (e) {
+      // fallback: regex of first few tokens
+      const tokens = text.split(/\s+/).slice(0, 5).join("|");
+      const regex = new RegExp(tokens, "i");
+      return IssueModel.find({
+        $or: [{ title: regex }, { description: regex }],
+      })
+        .limit(limit)
+        .lean();
+    }
   }
+
+  return {
+    listIssues,
+    getIssueById,
+    createIssue,
+    updateIssueStatus,
+    searchIssuesByText,
+  };
 }

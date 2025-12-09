@@ -9,6 +9,7 @@ import {
   Col,
   Badge,
 } from "react-bootstrap";
+import IssueSummaryButton from "./IssueSummaryButton";
 
 const GET_ALL_ISSUES = gql`
   query {
@@ -86,8 +87,12 @@ export default function ManageIssues() {
                 </Form.Select>
               </Col>
 
-              <Col md={6} className="text-end">
+              <Col md={3} className="text-center">
                 <Badge bg="danger">Urgency: {issue.urgency ?? "N/A"}</Badge>
+              </Col>
+
+              <Col md={3} className="text-end">
+                <IssueSummaryButton issueId={issue.id} />
               </Col>
             </Row>
           </Card.Body>

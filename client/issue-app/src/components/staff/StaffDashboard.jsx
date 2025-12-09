@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import IssueChatbot from "./IssueChatbot";
 
 export default function StaffDashboard({ currentUser }) {
   return (
@@ -27,6 +28,17 @@ export default function StaffDashboard({ currentUser }) {
               <Card.Title>📊 Analytics & AI Insights</Card.Title>
               <Card.Text>View heatmaps, trends, and backlog analytics.</Card.Text>
               <Button as={Link} to="/analytics" variant="success">View Analytics</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row className="g-4 mt-4">
+        <Col md={12}>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title>💬 Community Chatbot</Card.Title>
+              <IssueChatbot />
             </Card.Body>
           </Card>
         </Col>

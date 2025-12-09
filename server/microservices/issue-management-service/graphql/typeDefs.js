@@ -24,10 +24,13 @@ const typeDefs = gql`
     updatedAt: String!
   }
 
+  # AIAnalysis: result returned by the AI assistant for an issue
   type AIAnalysis {
-    category: String!
-    urgency: Int!
-    summary: String!
+    summary: String
+    category: String
+    urgency: Int
+    tags: [String]
+    suggestedAction: String
   }
 
   input CreateIssueInput {
@@ -44,15 +47,24 @@ const typeDefs = gql`
   }
 
   type Query {
+   
     issues(filter: IssueFilterInput): [Issue!]!
     issue(id: ID!): Issue
+    analyzeIssue(description: String!): AIAnalysis
+    issueChatbot(input: String!): ChatbotResponse
   }
 
   type Mutation {
-    createIssue(input: CreateIssueInput!): Issue!
+     createIssue(input: CreateIssueInput!): Issue!
     updateIssueStatus(id: ID!, status: IssueStatus!): Issue!
-    analyzeIssue(description: String!): AIAnalysis!
+    summarizeIssue(issueId: ID!): AIAnalysis
   }
+  type ChatbotResponse {
+    text: String
+    suggestedQuestions: [String]
+    retrievedIssues: [Issue]
+  }
+
 `;
 
 export default typeDefs;

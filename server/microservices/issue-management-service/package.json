@@ -2,7 +2,7 @@
   "name": "issue-management-service",
   "version": "1.0.0",
   "main": "issue-microservice.js",
-   "scripts": {
+  "scripts": {
     "dev": "nodemon issue-microservice.js",
     "start": "node issue-microservice.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +14,8 @@
   "dependencies": {
     "@apollo/server": "^4.12.2",
     "@apollo/subgraph": "^2.11.3",
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/google-genai": "^2.0.4",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",

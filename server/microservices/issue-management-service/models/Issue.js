@@ -5,13 +5,15 @@ const IssueSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    latitude: { type: Number },
-    longitude: { type: Number },
-    photoUrl: { type: String },
+    latitude: Number,
+    longitude: Number,
+    photoUrl: String,
 
-    // AI-enriched fields
-    category: { type: String },
+    category: String,
     urgency: { type: Number, min: 1, max: 5 },
+
+    aiSummary: String,
+    aiTags: { type: [String], default: [] },
 
     status: {
       type: String,
@@ -19,12 +21,17 @@ const IssueSchema = new mongoose.Schema(
       default: "OPEN",
     },
 
-    createdBy: { type: String, required: true }, // userId from JWT
+    createdBy: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-// For geospatial queries
+// add indexes if desired
+IssueSchema.index({ title: "text", description: "text" });
 IssueSchema.index({ latitude: 1, longitude: 1 });
 
-export const IssueModel = mongoose.model("Issue", IssueSchema);
+const IssueModel = mongoose.model("Issue", IssueSchema);
+
+// export both named and default to avoid import headaches
+export { IssueModel };
+export default IssueModel;
