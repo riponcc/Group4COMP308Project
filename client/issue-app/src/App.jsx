@@ -30,6 +30,11 @@ import CommunityBoard from "./components/communityAdvocate/advocateBoard.jsx";
 import TrendInsights from "./components/communityAdvocate/TrendInsights.jsx";
 import AdvocateDashboard from "./components/communityAdvocate/AdvocateDashboard.jsx";
 
+//AI Chatbot
+import StaffAI from "./components/staff/StaffAI.jsx";
+import AdvocateAI from "./components/communityAdvocate/AdvocateAI.jsx";
+import ResidentAI from "./components/residents/ResidentAI.jsx";
+
 // ---------------- Apollo Client Setup ----------------
 const httpLink = createHttpLink({
   uri: "http://localhost:4002/graphql",
@@ -100,6 +105,10 @@ export default function App() {
             {/* RESIDENT ROUTES */}
             <Route path="/issues" element={<IssueList />} />
             <Route path="/submit" element={<IssueForm />} />
+            <Route
+              path="/resident-ai"
+              element={<ResidentAI />}
+            />
 
             {/* STAFF ROUTES (protected) */}
             <Route
@@ -120,6 +129,17 @@ export default function App() {
                 />
               }
             />
+            <Route
+              path="/staff-ai"
+              element={
+                <ProtectedRoute
+                  role="Staff"
+                  element={<StaffAI />}
+                />
+              }
+            />
+
+            {/* ADVOCATE AI ROUTE */}
 
             {/* ADVOCATE ROUTES (protected) */}
             <Route
@@ -140,6 +160,15 @@ export default function App() {
                 />
               }
             />
+            <Route
+              path="/advocate-ai"
+              element={
+                <ProtectedRoute
+                  role="Advocate"
+                  element={<AdvocateAI />}
+                />
+              }
+            />  
           </Routes>
         </Container>
       </BrowserRouter>

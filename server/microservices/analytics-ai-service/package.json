@@ -1,13 +1,34 @@
 {
   "name": "analytics-ai-service",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "analytics-ai-microservice.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node analytics-ai-microservice.js",
+    "dev": "nodemon analytics-ai-microservice.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/community": "^0.3.38",
+    "@langchain/core": "^0.3.43",
+    "@langchain/google-genai": "^0.2.1",
+    "@langchain/langgraph": "^0.2.74",
+    "axios": "^1.13.2",
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "mongoose": "^9.0.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
 }

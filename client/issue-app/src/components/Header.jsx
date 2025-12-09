@@ -58,6 +58,8 @@ export default function Header() {
                 <Nav.Link as={Link} to="/">Resident Dashboard</Nav.Link>
                 <Nav.Link as={Link} to="/issues">My Issues</Nav.Link>
                 <Nav.Link as={Link} to="/submit">Submit Issue</Nav.Link>
+                <Nav.Link as={Link} to="/resident-ai">AI Assistant</Nav.Link>
+
               </>
             )}
 
@@ -67,6 +69,8 @@ export default function Header() {
                 <Nav.Link as={Link} to="/">Staff Dashboard</Nav.Link>
                 <Nav.Link as={Link} to="/manage">Manage Issues</Nav.Link>
                 <Nav.Link as={Link} to="/analytics">Analytics</Nav.Link>
+                <Nav.Link as={Link} to="/staff-ai">AI Assistant</Nav.Link>
+
               </>
             )}
 
@@ -76,6 +80,8 @@ export default function Header() {
                 <Nav.Link as={Link} to="/">Advocate Dashboard</Nav.Link>
                 <Nav.Link as={Link} to="/community">Community Board</Nav.Link>
                 <Nav.Link as={Link} to="/trends">Trend Insights</Nav.Link>
+                <Nav.Link as={Link} to="/advocate-ai">AI Assistant</Nav.Link>
+
               </>
             )}
 
