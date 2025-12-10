@@ -204,3 +204,21 @@ const builder = new StateGraph(stateSchema)
 
 export const graph = builder.compile();
 export { loadAndEmbedIssues };
+
+// -------------------------------------------------------------------
+// 7. Export function to get all chat history for advocates
+// -------------------------------------------------------------------
+export async function getAllChatHistory() {
+  try {
+    const allHistory = await db.all(
+      `SELECT sessionId, question, answer, timestamp 
+       FROM memory 
+       ORDER BY timestamp DESC 
+       LIMIT 50`
+    );
+    return allHistory;
+  } catch (err) {
+    console.error("Error fetching chat history:", err);
+    return [];
+  }
+}

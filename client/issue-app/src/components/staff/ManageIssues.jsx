@@ -41,33 +41,33 @@ export default function ManageIssues() {
     onCompleted: () => refetch()
   });
 
-  if (loading) return <Spinner animation="border" />;
-  if (error) return <p className="text-danger">{error.message}</p>;
+  if (loading) return <Spinner animation="border" variant="danger" />;
+  if (error) return <p style={{ color: "#dc3545", textAlign: "center", marginTop: "20px" }}>{error.message}</p>;
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-      <h2 className="mb-4">Municipal Staff – Issue Management</h2>
+    <div style={{ maxWidth: "900px", margin: "0 auto", backgroundColor: "#0d0d0d", padding: "20px", minHeight: "100vh" }}>
+      <h2 className="mb-4" style={{ color: "#ffffff", fontWeight: "bold" }}>Municipal Staff – Issue Management</h2>
 
       {data.issues.map((issue) => (
-        <Card key={issue.id} className="mb-3 shadow-sm">
+        <Card key={issue.id} className="mb-3 shadow-sm" style={{ backgroundColor: "#1a1a1a", border: "2px solid #dc3545" }}>
           <Card.Body>
-            <Card.Title>
+            <Card.Title style={{ color: "#ffffff", fontWeight: "bold", fontSize: "1.3rem" }}>
               {issue.title}{" "}
-              <Badge bg="info">{issue.category || "Uncategorized"}</Badge>
+              <Badge bg="info" style={{ fontSize: "0.9rem" }}>{issue.category || "Uncategorized"}</Badge>
             </Card.Title>
 
-            <Card.Subtitle className="text-muted">
+            <Card.Subtitle style={{ color: "#aaa", marginTop: "8px" }}>
               {new Date(issue.createdAt).toLocaleString()}
             </Card.Subtitle>
 
-            <Card.Text className="mt-2">{issue.description}</Card.Text>
+            <Card.Text className="mt-2" style={{ color: "#e0e0e0", lineHeight: "1.6" }}>{issue.description}</Card.Text>
             <Card.Text className="mt-3">
                               {issue.photoUrl ? (
-                                <a href={issue.photoUrl} target="_blank" rel="noopener noreferrer">
-                                  View Photo
+                                <a href={issue.photoUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#dc3545", fontWeight: "bold", textDecoration: "none" }}>
+                                  📷 View Photo
                                 </a>
                               ) : (
-                                "No photo provided"
+                                <span style={{ color: "#888" }}>No photo provided</span>
                               )}
                             </Card.Text>
 

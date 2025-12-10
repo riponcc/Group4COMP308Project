@@ -17,7 +17,7 @@ const resolvers = {
   },
 
   Mutation: {
-    createIssue: async (_, { input }, { user, issueService }) => {
+    createIssue: async (_, { input }, { user, issueService, io }) => {
       if (!user) {
         throw new Error("Unauthorized");
       }
@@ -30,14 +30,40 @@ const resolvers = {
         throw new Error("User ID missing in authentication token");
       }
 
-      return issueService.createIssue(input, userId);
+      const newIssue = await issueService.createIssue(input, userId);
+
+      // 🔔 Emit notification for new issue
+      if (io) {
+        io.emit('notification', {
+          type: 'NEW_ISSUE',
+          message: `New issue reported: ${newIssue.title}`,
+          issue: newIssue,
+          timestamp: new Date().toISOString(),
+          urgency: newIssue.urgency >= 4 ? 'HIGH' : 'NORMAL'
+        });
+      }
+
+      return newIssue;
     },
 
-    updateIssueStatus: async (_, { id, status }, { user, issueService }) => {
+    updateIssueStatus: async (_, { id, status }, { user, issueService, io }) => {
       if (!user) throw new Error("Unauthorized");
 
       // optional: ensure only staff can update issues
-      return issueService.updateIssueStatus(id, status);
+      const updatedIssue = await issueService.updateIssueStatus(id, status);
+
+      // 🔔 Emit notification for status change
+      if (io) {
+        io.emit('notification', {
+          type: 'STATUS_UPDATE',
+          message: `Issue status changed to ${status}`,
+          issue: updatedIssue,
+          status: status,
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      return updatedIssue;
     },
 
     analyzeIssue: async (_, { description }, { issueAI }) => {

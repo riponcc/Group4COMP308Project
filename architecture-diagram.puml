@@ -1,0 +1,127 @@
+@startuml architecture
+
+title Municipal Issue Management System - Architecture Diagram
+
+skinparam backgroundColor White
+skinparam defaultTextAlignment center
+
+' Frontend Layer
+package "Frontend Layer" as frontend {
+    rectangle "Shell App\n:3000\n(Host)" <<frontend>> as shell
+    rectangle "User App\n:3001\n(Auth Module)" <<frontend>> as userapp
+    rectangle "Issue App\n:3002\n(Issue Module)" <<frontend>> as issueapp
+}
+
+' Backend Microservices Layer
+package "Backend Microservices Layer" as backend {
+    rectangle "Auth Service\n:4001\nJWT Authentication" <<backend>> as auth
+    rectangle "Issue Management\nService :4002\nCRUD + Socket.io" <<backend>> as issue
+    rectangle "Analytics-AI Service\n:5005\nLangGraph + RAG" <<backend>> as analytics
+}
+
+' Database Layer
+package "Database Layer" as databases {
+    database "MongoDB\nAuth DB" as authdb
+    database "MongoDB\nIssues DB" as issuedb
+    database "SQLite\nChat History" as chatdb
+}
+
+' External Services
+cloud "External Services" as external {
+    rectangle "Google Gemini API\n(AI Model)" as gemini
+}
+
+' Real-time Layer
+package "Real-time Communication" as realtime {
+    rectangle "Socket.io Server\n(Port 4002)" as socketserver
+    rectangle "Socket.io Client\n(React Context)" as socketclient
+}
+
+' Frontend connections
+shell -down-> userapp : "Module\nFederation"
+shell -down-> issueapp : "Module\nFederation"
+
+' Frontend to Backend (GraphQL)
+userapp -down-> auth : "GraphQL\n(Apollo Client)"
+issueapp -down-> issue : "GraphQL\n(Apollo Client)"
+issueapp -down-> analytics : "REST API\n(Fetch)"
+
+' Backend to Database
+auth -down-> authdb : "Mongoose\nORM"
+issue -down-> issuedb : "Mongoose\nORM"
+analytics -down-> issuedb : "Read-only\nAccess"
+analytics -down-> chatdb : "SQLite\nDriver"
+
+' AI Service
+analytics -right-> gemini : "API Key\nAuthentication"
+
+' Socket.io connections
+issue -down-> socketserver : "Emits\nNotifications"
+socketclient -up-> socketserver : "WebSocket\nConnection"
+issueapp -down-> socketclient : "React\nContext"
+
+' Notes
+note right of shell
+  **Module Federation Host**
+  Loads remote modules
+  Routing & navigation
+  Global state management
+end note
+
+note right of auth
+  **Authentication Service**
+  User registration
+  Login with JWT
+  Role-based access
+  GraphQL API
+end note
+
+note right of issue
+  **Issue Management**
+  CRUD operations
+  Status updates
+  Real-time notifications
+  GraphQL + Socket.io
+end note
+
+note right of analytics
+  **AI & Analytics**
+  LangGraph state machine
+  Auto categorization
+  Urgency scoring
+  Trend analysis with RAG
+  Conversational chatbot
+end note
+
+note left of socketserver
+  **Real-time Notifications**
+  Emits events:
+  Issue created
+  Status updated
+  Instant toast notifications
+end note
+
+note right of gemini
+  **Google Gemini 2.5 Flash**
+  Natural language processing
+  Context-aware responses
+  Embedding generation
+  20 requests per day (free tier)
+end note
+
+' Legend
+legend right
+  **Technology Stack**
+  Frontend: React 18.2 + Vite
+  Backend: Node.js + Express
+  Databases: MongoDB + SQLite
+  External: Google Gemini API
+  
+  **Communication Protocols**
+  GraphQL (Apollo)
+  REST API
+  WebSocket (Socket.io)
+  Mongoose ORM
+endlegend
+
+@enduml

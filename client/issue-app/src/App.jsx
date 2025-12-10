@@ -10,7 +10,12 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+
+// Notification Provider
+import { NotificationProvider } from "./context/NotificationContext.jsx";
 
 // ---------------- COMPONENTS ----------------
 import Header from "./components/Header.jsx";
@@ -94,84 +99,102 @@ export default function App() {
 
   return (
     <ApolloProvider client={issueClient}>
-      <BrowserRouter>
-        <Header />
+      <NotificationProvider>
+        <BrowserRouter>
+          <div style={{ backgroundColor: "#0d0d0d", minHeight: "100vh" }}>
+            <Header />
 
-        <Container className="mt-4 mb-4">
-          <Routes>
-            {/* HOME PAGE (role-based) */}
-            <Route path="/" element={getHomePage(user?.role, user)} />
+            <Container fluid className="mt-4 mb-4" style={{ backgroundColor: "#0d0d0d", padding: "0" }}>
+              <Routes>
+                {/* HOME PAGE (role-based) */}
+                <Route path="/" element={getHomePage(user?.role, user)} />
 
-            {/* RESIDENT ROUTES */}
-            <Route path="/issues" element={<IssueList />} />
-            <Route path="/submit" element={<IssueForm />} />
-            <Route
-              path="/resident-ai"
-              element={<ResidentAI />}
-            />
+              {/* RESIDENT ROUTES */}
+              <Route path="/issues" element={<IssueList />} />
+              <Route path="/submit" element={<IssueForm />} />
+              <Route
+                path="/resident-ai"
+                element={<ResidentAI />}
+              />
 
-            {/* STAFF ROUTES (protected) */}
-            <Route
-              path="/manage"
-              element={
-                <ProtectedRoute
-                  role="Staff"
-                  element={<ManageIssues />}
-                />
-              }
-            />
-            <Route
-              path="/analytics"
-              element={
-                <ProtectedRoute
-                  role="Staff"
-                  element={<AnalyticsDashboard />}
-                />
-              }
-            />
-            <Route
-              path="/staff-ai"
-              element={
-                <ProtectedRoute
-                  role="Staff"
-                  element={<StaffAI />}
-                />
-              }
-            />
+              {/* STAFF ROUTES (protected) */}
+              <Route
+                path="/manage"
+                element={
+                  <ProtectedRoute
+                    role="Staff"
+                    element={<ManageIssues />}
+                  />
+                }
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <ProtectedRoute
+                    role="Staff"
+                    element={<AnalyticsDashboard />}
+                  />
+                }
+              />
+              <Route
+                path="/staff-ai"
+                element={
+                  <ProtectedRoute
+                    role="Staff"
+                    element={<StaffAI />}
+                  />
+                }
+              />
 
-            {/* ADVOCATE AI ROUTE */}
+              {/* ADVOCATE AI ROUTE */}
 
-            {/* ADVOCATE ROUTES (protected) */}
-            <Route
-              path="/community"
-              element={
-                <ProtectedRoute
-                  role="Advocate"
-                  element={<CommunityBoard />}
-                />
-              }
-            />
-            <Route
-              path="/trends"
-              element={
-                <ProtectedRoute
-                  role="Advocate"
-                  element={<TrendInsights />}
-                />
-              }
-            />
-            <Route
-              path="/advocate-ai"
-              element={
-                <ProtectedRoute
-                  role="Advocate"
-                  element={<AdvocateAI />}
-                />
-              }
-            />  
-          </Routes>
-        </Container>
-      </BrowserRouter>
+              {/* ADVOCATE ROUTES (protected) */}
+              <Route
+                path="/community"
+                element={
+                  <ProtectedRoute
+                    role="Advocate"
+                    element={<CommunityBoard />}
+                  />
+                }
+              />
+              <Route
+                path="/trends"
+                element={
+                  <ProtectedRoute
+                    role="Advocate"
+                    element={<TrendInsights />}
+                  />
+                }
+              />
+              <Route
+                path="/advocate-ai"
+                element={
+                  <ProtectedRoute
+                    role="Advocate"
+                    element={<AdvocateAI />}
+                  />
+                }
+              />  
+            </Routes>
+          </Container>
+          </div>
+        </BrowserRouter>
+
+        {/* Toast Container for Notifications */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      </NotificationProvider>
     </ApolloProvider>
   );
 }

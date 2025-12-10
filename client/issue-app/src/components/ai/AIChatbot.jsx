@@ -112,18 +112,19 @@ export default function AIChatbot() {
     <Container className="mt-4">
       <Row className="justify-content-center">
         <Col md={8} lg={6}>
-          <Card className="shadow-sm">
-            <Card.Header className="d-flex justify-content-between align-items-center">
+          <Card className="shadow-lg" style={{ backgroundColor: "#1a1a1a", border: "1px solid #dc3545" }}>
+            <Card.Header className="d-flex justify-content-between align-items-center" style={{ backgroundColor: "#000000", borderBottom: "2px solid #dc3545" }}>
               <div>
-                <strong>AI Community Assistant</strong>
-                <div style={{ fontSize: "0.8rem", color: "#666" }}>
+                <strong style={{ color: "#dc3545", fontSize: "1.1rem" }}>AI Community Assistant</strong>
+                <div style={{ fontSize: "0.8rem", color: "#888" }}>
                   Powered by LangGraph + Gemini + MongoDB
                 </div>
               </div>
               <Button
-                variant="outline-secondary"
+                variant="outline-danger"
                 size="sm"
                 onClick={handleReset}
+                style={{ borderColor: "#dc3545", color: "#dc3545" }}
               >
                 Reset Chat
               </Button>
@@ -134,7 +135,7 @@ export default function AIChatbot() {
               style={{
                 maxHeight: "400px",
                 overflowY: "auto",
-                backgroundColor: "#f8f9fa",
+                backgroundColor: "#0d0d0d",
               }}
             >
               {messages.map((m) => (
@@ -152,10 +153,10 @@ export default function AIChatbot() {
                       borderRadius: "12px",
                       padding: "8px 12px",
                       backgroundColor:
-                        m.sender === "user" ? "#0d6efd" : "#ffffff",
-                      color: m.sender === "user" ? "#fff" : "#000",
+                        m.sender === "user" ? "#dc3545" : "#1a1a1a",
+                      color: m.sender === "user" ? "#fff" : "#e0e0e0",
                       border:
-                        m.sender === "ai" ? "1px solid rgba(0,0,0,0.05)" : "",
+                        m.sender === "ai" ? "1px solid #dc3545" : "",
                     }}
                   >
                     <div
@@ -173,8 +174,8 @@ export default function AIChatbot() {
                         style={{
                           marginTop: "6px",
                           fontSize: "0.8rem",
-                          color: "#555",
-                          borderTop: "1px dashed #ddd",
+                          color: "#999",
+                          borderTop: "1px dashed #444",
                           paddingTop: "4px",
                         }}
                       >
@@ -187,45 +188,59 @@ export default function AIChatbot() {
 
               {loading && (
                 <div className="d-flex justify-content-center mt-2">
-                  <Spinner animation="border" size="sm" />
-                  <span className="ms-2">Thinking...</span>
+                  <Spinner animation="border" size="sm" style={{ color: "#dc3545" }} />
+                  <span className="ms-2" style={{ color: "#e0e0e0" }}>Thinking...</span>
                 </div>
               )}
             </Card.Body>
 
-            <Card.Footer>
+            <Card.Footer style={{ backgroundColor: "#000000", borderTop: "2px solid #dc3545" }}>
               {error && (
-                <Alert variant="danger" className="mb-2">
+                <Alert variant="danger" className="mb-2" style={{ backgroundColor: "#dc3545", color: "#fff", border: "none" }}>
                   {error}
                 </Alert>
               )}
 
               {followUps.length > 0 && (
-                <div className="mb-2">
-                  <div style={{ fontSize: "0.85rem", marginBottom: "4px" }}>
+                <div className="mb-3" style={{ 
+                  backgroundColor: "#1a1a1a", 
+                  padding: "12px", 
+                  borderRadius: "8px",
+                  border: "1px solid #dc3545"
+                }}>
+                  <div style={{ fontSize: "0.85rem", marginBottom: "8px", color: "#dc3545", fontWeight: "600" }}>
                     Suggested follow-up questions:
                   </div>
-                  {followUps.map((q, idx) => (
-                    <Badge
-                      key={idx}
-                      bg="secondary"
-                      pill
-                      style={{
-                        cursor: "pointer",
-                        marginRight: "4px",
-                        marginBottom: "4px",
-                      }}
-                      onClick={() => handleFollowUpClick(q)}
-                    >
-                      {q}
-                    </Badge>
-                  ))}
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                    {followUps.map((q, idx) => (
+                      <Badge
+                        key={idx}
+                        bg="dark"
+                        style={{
+                          cursor: "pointer",
+                          padding: "8px 12px",
+                          fontSize: "0.8rem",
+                          backgroundColor: "#2a2a2a",
+                          color: "#e0e0e0",
+                          border: "1px solid #dc3545",
+                          borderRadius: "6px",
+                          whiteSpace: "normal",
+                          textAlign: "left",
+                          maxWidth: "100%",
+                          wordWrap: "break-word"
+                        }}
+                        onClick={() => handleFollowUpClick(q)}
+                      >
+                        {q}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               )}
 
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-2">
-                  <Form.Label>
+                  <Form.Label style={{ color: "#e0e0e0" }}>
                     <strong>Ask a question:</strong>
                   </Form.Label>
                   <Form.Control
@@ -234,6 +249,11 @@ export default function AIChatbot() {
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     disabled={loading}
+                    style={{
+                      backgroundColor: "#2a2a2a",
+                      border: "1px solid #dc3545",
+                      color: "#e0e0e0"
+                    }}
                   />
                 </Form.Group>
 
@@ -241,6 +261,12 @@ export default function AIChatbot() {
                   <Button
                     type="submit"
                     disabled={loading || !userInput.trim()}
+                    variant="danger"
+                    style={{
+                      backgroundColor: "#dc3545",
+                      border: "none",
+                      fontWeight: "600"
+                    }}
                   >
                     {loading ? "Thinking..." : "Ask"}
                   </Button>

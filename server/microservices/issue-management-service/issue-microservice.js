@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 
 import express from 'express';
+import { createServer } from 'http';
+import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -22,6 +24,20 @@ import { issueAI } from './services/issueAI.js';
 
 // Initialize Express app
 const app = express();
+const httpServer = createServer(app);
+
+// Initialize Socket.io
+const io = new SocketIOServer(httpServer, {
+  cors: {
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3002',
+    ],
+    credentials: true,
+  },
+});
+
 app.set('trust proxy', 1);
 
 // -----------------------------------------------------
@@ -71,6 +87,15 @@ async function startServer() {
   // Inject services
   const issueService = new IssueService(IssueModel, issueAI);
 
+  // Socket.io connection handling
+  io.on('connection', (socket) => {
+    console.log('✅ Client connected:', socket.id);
+
+    socket.on('disconnect', () => {
+      console.log('❌ Client disconnected:', socket.id);
+    });
+  });
+
   app.use(
     '/graphql',
     expressMiddleware(server, {
@@ -111,6 +136,7 @@ async function startServer() {
           isAuthenticated: !!user,
           issueService,
           issueAI,
+          io, // Pass Socket.io to resolvers
         };
       },
     })
@@ -118,8 +144,9 @@ async function startServer() {
 
   const PORT = process.env.ISSUE_SERVICE_PORT || 4002;
 
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`🚀 Issue Microservice running at http://localhost:${PORT}/graphql`);
+    console.log(`📡 Socket.io server ready for real-time notifications`);
   });
 }
 
