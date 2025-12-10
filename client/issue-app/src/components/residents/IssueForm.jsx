@@ -85,11 +85,12 @@ export default function IssueForm() {
   };
 
   return (
-    <Card className="shadow-sm">
+    <div style={{ backgroundColor: "#0d0d0d", padding: "20px", minHeight: "100vh" }}>
+    <Card className="shadow-sm" style={{ backgroundColor: "#1a1a1a", border: "2px solid #dc3545", maxWidth: "800px", margin: "0 auto" }}>
       <Card.Body>
-        <Card.Title className="mb-3">Report a Community Issue</Card.Title>
-        <Card.Text className="text-muted mb-3">
-          Describe what’s happening in your neighbourhood. Our AI will
+        <Card.Title className="mb-3" style={{ color: "#ffffff", fontWeight: "bold", fontSize: "1.5rem" }}>Report a Community Issue</Card.Title>
+        <Card.Text className="mb-3" style={{ color: "#e0e0e0", fontSize: "1rem" }}>
+          Describe what's happening in your neighbourhood. Our AI will
           automatically categorize the issue and assign an urgency level
           (1–5) for city staff.
         </Card.Text>
@@ -187,5 +188,6 @@ export default function IssueForm() {
         </Form>
       </Card.Body>
     </Card>
+    </div>
   );
 }

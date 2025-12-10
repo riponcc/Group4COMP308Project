@@ -2,7 +2,7 @@
 import React from "react";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { gql, ApolloClient, InMemoryCache } from "@apollo/client";
+import { gql, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
 const LOGOUT_MUTATION = gql`
   mutation Logout {
@@ -10,10 +10,14 @@ const LOGOUT_MUTATION = gql`
   }
 `;
 
-const authClient = new ApolloClient({
+const httpLink = new HttpLink({
   uri: "http://localhost:4001/graphql",
-  cache: new InMemoryCache(),
   credentials: "include",
+});
+
+const authClient = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
 });
 
 export default function Header() {

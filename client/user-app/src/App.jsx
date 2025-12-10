@@ -1,12 +1,16 @@
 // client/user-app/src/App.jsx
 import UserComponent from './UserComponent';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
 
-// Set up Apollo Client
-const client = new ApolloClient({
-  uri: 'http://localhost:4001/graphql', // Set this to your actual GraphQL endpoint
-  cache: new InMemoryCache(),
+// Set up Apollo Client with HttpLink
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4001/graphql',
   credentials: 'include'
+});
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache()
 });
 
 

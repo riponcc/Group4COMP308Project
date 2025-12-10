@@ -84,41 +84,37 @@ export default function IssueList() {
 
   if (loading && !data) {
     return (
-      <div className="d-flex justify-content-center my-5">
-        <Spinner animation="border" role="status" />
+      <div style={{ backgroundColor: "#0d0d0d", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Spinner animation="border" variant="danger" role="status" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <Alert variant="danger" className="mt-3 text-center">
-        {error.message}
-      </Alert>
+      <div style={{ backgroundColor: "#0d0d0d", minHeight: "100vh", padding: "20px" }}>
+        <Alert variant="danger" className="mt-3 text-center">
+          {error.message}
+        </Alert>
+      </div>
     );
   }
 
   const issues = data?.issues ?? [];
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        width: "100%",
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: "700px" }}>
+    <div style={{ backgroundColor: "#0d0d0d", padding: "20px", minHeight: "100vh" }}>
+      <div style={{ width: "100%", maxWidth: "800px", margin: "0 auto" }}>
         {/* Filter Section */}
-        <Card className="mb-4 shadow-sm">
+        <Card className="mb-4 shadow-sm" style={{ backgroundColor: "#1a1a1a", border: "2px solid #dc3545" }}>
           <Card.Body>
-            <Card.Title className="text-center">Reported Issues</Card.Title>
+            <Card.Title className="text-center" style={{ color: "#ffffff", fontWeight: "bold", fontSize: "1.5rem" }}>Reported Issues</Card.Title>
 
             <Form onSubmit={handleFilterSubmit} className="mt-3">
               <Row className="g-2">
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Status</Form.Label>
+                    <Form.Label style={{ color: "#ffffff", fontWeight: "500" }}>Status</Form.Label>
                     <Form.Select
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
@@ -134,7 +130,7 @@ export default function IssueList() {
 
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Category</Form.Label>
+                    <Form.Label style={{ color: "#ffffff", fontWeight: "500" }}>Category</Form.Label>
                     <Form.Control
                       placeholder="road, lighting, flooding"
                       value={category}
@@ -145,7 +141,7 @@ export default function IssueList() {
               </Row>
 
               <div className="mt-3 text-center">
-                <Button type="submit" className="me-2">
+                <Button type="submit" className="me-2" style={{ fontWeight: "bold" }}>
                   Apply Filters
                 </Button>
                 <Button
@@ -165,52 +161,52 @@ export default function IssueList() {
 
         {/* No Results */}
         {issues.length === 0 ? (
-          <Alert variant="info" className="text-center">
+          <Alert variant="info" className="text-center" style={{ backgroundColor: "#1a1a1a", color: "#ffffff", border: "1px solid #0dcaf0" }}>
             No issues found for the selected filters.
           </Alert>
         ) : (
           issues.map((issue) => (
-            <Card key={issue.id} className="mb-3 shadow-sm">
+            <Card key={issue.id} className="mb-3 shadow-sm" style={{ backgroundColor: "#1a1a1a", border: "2px solid #28a745" }}>
               <Card.Body>
                 <div className="d-flex justify-content-between align-items-start">
                   <div>
-                    <Card.Title className="mb-1">
+                    <Card.Title className="mb-1" style={{ color: "#ffffff", fontWeight: "bold", fontSize: "1.3rem" }}>
                       {issue.title}{" "}
-                      <Badge bg={statusVariant(issue.status)}>
+                      <Badge bg={statusVariant(issue.status)} style={{ fontSize: "0.9rem", padding: "8px 12px" }}>
                         {issue.status}
                       </Badge>
                     </Card.Title>
-                    <Card.Subtitle className="text-muted mb-2">
+                    <Card.Subtitle className="mb-2" style={{ color: "#aaa" }}>
                       {new Date(issue.createdAt).toLocaleString()}
                     </Card.Subtitle>
                   </div>
 
                   <div className="text-end">
                     <div className="mb-1">
-                      <span className="fw-bold">Category:</span>{" "}
-                      <Badge bg="info">
+                      <span style={{ color: "#ffffff", fontWeight: "bold" }}>Category:</span>{" "}
+                      <Badge bg="info" style={{ fontSize: "0.9rem", padding: "6px 10px" }}>
                         {issue.category || "Uncategorized"}
                       </Badge>
                     </div>
                     <div>
-                      <span className="fw-bold">Urgency:</span>{" "}
-                      <Badge bg={urgencyVariant(issue.urgency)}>
+                      <span style={{ color: "#ffffff", fontWeight: "bold" }}>Urgency:</span>{" "}
+                      <Badge bg={urgencyVariant(issue.urgency)} style={{ fontSize: "0.9rem", padding: "6px 10px" }}>
                         {issue.urgency ?? "N/A"}
                       </Badge>
                     </div>
                   </div>
                 </div>
 
-                <Card.Text className="mt-3">
+                <Card.Text className="mt-3" style={{ color: "#e0e0e0", lineHeight: "1.6" }}>
                   {issue.description}
                 </Card.Text>
                 <Card.Text className="mt-3">
                   {issue.photoUrl ? (
-                    <a href={issue.photoUrl} target="_blank" rel="noopener noreferrer">
-                      View Photo
+                    <a href={issue.photoUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#dc3545", fontWeight: "bold", textDecoration: "none" }}>
+                      📷 View Photo
                     </a>
                   ) : (
-                    "No photo provided"
+                    <span style={{ color: "#888" }}>No photo provided</span>
                   )}
                 </Card.Text>
 

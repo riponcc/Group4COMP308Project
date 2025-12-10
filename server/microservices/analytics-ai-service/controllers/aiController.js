@@ -12,7 +12,16 @@ export const runAIQuery = async (req, res) => {
     res.json(result);
   } catch (err) {
     console.error("AI Query Error:", err);
-    res.status(500).json({ error: "AI processing failed" });
+    
+    // Check if it's a quota/rate limit error
+    if (err.status === 429 || err.message?.includes("quota") || err.message?.includes("rate limit")) {
+      return res.status(429).json({ 
+        error: "AI service is temporarily unavailable due to quota limits. Please try again in a few moments.",
+        retryAfter: 60
+      });
+    }
+    
+    res.status(500).json({ error: "AI processing failed. Please try again later." });
   }
 };
 
@@ -24,6 +33,15 @@ export const runSummary = async (req, res) => {
     res.json({ summary: result.summary });
   } catch (err) {
     console.error("Summary Error:", err);
-    res.status(500).json({ error: "Summary failed" });
+    
+    // Check if it's a quota/rate limit error
+    if (err.status === 429 || err.message?.includes("quota") || err.message?.includes("rate limit")) {
+      return res.status(429).json({ 
+        error: "AI service is temporarily unavailable due to quota limits. Please try again in a few moments.",
+        retryAfter: 60
+      });
+    }
+    
+    res.status(500).json({ error: "Summary generation failed. Please try again later." });
   }
 };

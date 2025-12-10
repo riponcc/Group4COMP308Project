@@ -2,7 +2,7 @@
   "name": "issue-management-service",
   "version": "1.0.0",
   "main": "issue-microservice.js",
-   "scripts": {
+  "scripts": {
     "dev": "nodemon issue-microservice.js",
     "start": "node issue-microservice.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,7 +23,8 @@
     "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.19.1"
+    "mongoose": "^8.19.1",
+    "socket.io": "^4.8.1"
   },
   "type": "module",
   "devDependencies": {
